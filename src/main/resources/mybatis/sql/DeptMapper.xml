@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paper.papermgt.mapper.DeptMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.paper.papermgt.model.DeptModel" >
+	<result column="id" property="id"/>
+	<result column="dname" property="dname"/>
+	<result column="collegeid" property="collegeid"/>
+</resultMap>
+       
+<!-- t_dept table all fields -->
+<sql id="Base_Columns" >
+	  t.id as id,
+  t.dname as dname,
+  t.collegeid as collegeid
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Condition">
+<trim  suffixOverrides="," >
+<if test="model != null " >
+	 <if test="model.id != null and model.id != ''" >
+		and t.id = #{model.id}
+	</if>
+	 <if test="model.dname != null and model.dname != ''" >
+		and t.dname = #{model.dname}
+	</if>
+	 <if test="model.collegeid != null and model.collegeid != ''" >
+		and t.collegeid = #{model.collegeid}
+	</if>
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入院系记录 -->
+<insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+  insert into t_dept
+(id,
+dname,
+collegeid)
+ values(#{id},
+#{dname},
+#{collegeid})
+</insert>
+
+<!-- 批量插入院系记录 -->
+<insert id="addBatch" parameterType="java.util.List" >
+    insert into t_dept
+     (
+      id,dname,collegeid
+     ) 
+     values 
+    <foreach collection="list" item="item" index="index" separator="," >
+       (
+       	       	         	  	#{item.id},
+       	  	   	       	         	  	#{item.dname},
+       	  	   	       	         	  	#{item.collegeid}
+       	  	   		   )
+    </foreach>
+  </insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update t_dept set   dname=#{dname},
+  collegeid=#{collegeid}
+ where id=#{id}
+
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update t_dept set 
+	<trim  suffixOverrides="," >
+	<if test="dname != null  and dname != '' ">
+		dname=#{dname},
+	</if>
+	<if test="collegeid != null  and collegeid != '' ">
+		collegeid=#{collegeid},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 根据主键ID删除院系记录 -->
+<delete id="deleteById" parameterType="Object">
+	delete 	 from t_dept
+ where id = #{id}
+</delete>
+
+<!-- 根据条件删除院系记录 -->
+<delete id="deleteBySelective" parameterType="Object">
+	delete t from t_dept t
+	where 1=1 <include refid="Where_Condition"/>
+</delete>
+ 
+<!-- 根据主键id查询院系对象 -->
+<select id="getById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Columns" /> 
+	 from t_dept t where id = #{id}
+</select>
+
+<!-- 根据条件查询单个院系对象  -->
+<select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
+	select 
+	<include refid="Base_Columns"/>
+	from t_dept t
+	where 1=1 <include refid="Where_Condition"/>
+	limit 0,1
+</select>
+
+<!-- 院系列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from t_dept t
+	where 1=1
+	<include refid="Where_Condition"/>
+</select>
+  	
+<!-- 查询院系列表 -->
+<select id="queryList" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Columns"/>
+	from t_dept t
+	where 1=1
+	<include refid="Where_Condition"/>
+	<if test="pager != null">
+		<if test="pager.orderCondition!=null and pager.orderCondition!=''">
+		${pager.orderCondition}
+		</if>
+	    limit #{pager.beginIndex},#{pager.pageSize}
+	</if>
+</select>
+ 	
+</mapper>   

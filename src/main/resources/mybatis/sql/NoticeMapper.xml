@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paper.papermgt.mapper.NoticeMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.paper.papermgt.model.NoticeModel" >
+	<result column="id" property="id"/>
+	<result column="ntitle" property="ntitle"/>
+	<result column="scope" property="scope"/>
+	<result column="ncontent" property="ncontent"/>
+	<result column="time" property="time"/>
+</resultMap>
+       
+<!-- t_notice table all fields -->
+<sql id="Base_Columns" >
+	  t.id as id,
+  t.ntitle as ntitle,
+  t.scope as scope,
+  t.ncontent as ncontent,
+  t.time as time
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Condition">
+<trim  suffixOverrides="," >
+<if test="model != null " >
+	<if test="model.id != null" >
+		and t.id = #{model.id}
+	</if>
+	 <if test="model.ntitle != null and model.ntitle != ''" >
+		and t.ntitle = #{model.ntitle}
+	</if>
+	 <if test="model.scope != null and model.scope != ''" >
+		and t.scope = #{model.scope}
+	</if>
+	 <if test="model.ncontent != null and model.ncontent != ''" >
+		and t.ncontent = #{model.ncontent}
+	</if>
+	<if test="model.time != null" >
+		and t.time = #{model.time}
+	</if>
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入通知记录 -->
+<insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+  insert into t_notice
+(id,
+ntitle,
+scope,
+ncontent,
+time)
+ values(#{id},
+#{ntitle},
+#{scope},
+#{ncontent},
+#{time})
+</insert>
+
+<!-- 批量插入通知记录 -->
+<insert id="addBatch" parameterType="java.util.List" >
+    insert into t_notice
+     (
+      id,ntitle,scope,ncontent,time
+     ) 
+     values 
+    <foreach collection="list" item="item" index="index" separator="," >
+       (
+       	       	         	  	#{item.id},
+       	  	   	       	         	  	#{item.ntitle},
+       	  	   	       	         	  	#{item.scope},
+       	  	   	       	         	  	#{item.ncontent},
+       	  	   	       	         	  	#{item.time}
+       	  	   		   )
+    </foreach>
+  </insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update t_notice set   ntitle=#{ntitle},
+  scope=#{scope},
+  ncontent=#{ncontent},
+  time=#{time}
+ where id=#{id}
+
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update t_notice set 
+	<trim  suffixOverrides="," >
+	<if test="ntitle != null  and ntitle != '' ">
+		ntitle=#{ntitle},
+	</if>
+	<if test="scope != null  and scope != '' ">
+		scope=#{scope},
+	</if>
+	<if test="ncontent != null  and ncontent != '' ">
+		ncontent=#{ncontent},
+	</if>
+	<if test="time != null  ">
+		time=#{time},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 根据主键ID删除通知记录 -->
+<delete id="deleteById" parameterType="Object">
+	delete 	 from t_notice
+ where id = #{id}
+</delete>
+
+<!-- 根据条件删除通知记录 -->
+<delete id="deleteBySelective" parameterType="Object">
+	delete t from t_notice t
+	where 1=1 <include refid="Where_Condition"/>
+</delete>
+ 
+<!-- 根据主键id查询通知对象 -->
+<select id="getById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Columns" /> 
+	 from t_notice t where id = #{id}
+</select>
+
+<!-- 根据条件查询单个通知对象  -->
+<select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
+	select 
+	<include refid="Base_Columns"/>
+	from t_notice t
+	where 1=1 <include refid="Where_Condition"/>
+	limit 0,1
+</select>
+
+<!-- 通知列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from t_notice t
+	where 1=1
+	<include refid="Where_Condition"/>
+</select>
+  	
+<!-- 查询通知列表 -->
+<select id="queryList" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Columns"/>
+	from t_notice t
+	where 1=1
+	<include refid="Where_Condition"/>
+	<if test="pager != null">
+		<if test="pager.orderCondition!=null and pager.orderCondition!=''">
+		${pager.orderCondition}
+		</if>
+	    limit #{pager.beginIndex},#{pager.pageSize}
+	</if>
+</select>
+ 	
+</mapper>   

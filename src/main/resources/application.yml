@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.112:3306/db_graduation_thesis
+    username: root
+    password: password
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis:
+  mapper-locations: classpath:mybatis/sql/*Mapper.xml
+server:
+  port: 18080
+  servlet:
+    context-path: /papermgt
+
+logging:
+  level:
+    root: info
+    org.springframework.web: info
+    org.mybatis: debug
+  config: classpath:logback.xml
+

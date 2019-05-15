@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paper.papermgt.mapper.UserMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.paper.papermgt.model.UserModel" >
+	<result column="username" property="username"/>
+	<result column="password" property="password"/>
+	<result column="role" property="role"/>
+	<result column="lasttime" property="lasttime"/>
+	<result column="realname" property="realname"/>
+	<result column="collegeid" property="collegeid"/>
+	<result column="deptid" property="deptid"/>
+	<result column="classid" property="classid"/>
+	<result column="email" property="email"/>
+	<result column="telphone" property="telphone"/>
+</resultMap>
+       
+<!-- t_user table all fields -->
+<sql id="Base_Columns" >
+	  t.username as username,
+  t.password as password,
+  t.role as role,
+  t.lasttime as lasttime,
+  t.realname as realname,
+  t.collegeid as collegeid,
+  t.deptid as deptid,
+  t.classid as classid,
+  t.email as email,
+  t.telphone as telphone
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Condition">
+<trim  suffixOverrides="," >
+<if test="model != null " >
+	 <if test="model.username != null and model.username != ''" >
+		and t.username = #{model.username}
+	</if>
+	 <if test="model.password != null and model.password != ''" >
+		and t.password = #{model.password}
+	</if>
+	 <if test="model.role != null and model.role != ''" >
+		and t.role = #{model.role}
+	</if>
+	<if test="model.lasttime != null" >
+		and t.lasttime = #{model.lasttime}
+	</if>
+	 <if test="model.realname != null and model.realname != ''" >
+		and t.realname = #{model.realname}
+	</if>
+	 <if test="model.collegeid != null and model.collegeid != ''" >
+		and t.collegeid = #{model.collegeid}
+	</if>
+	 <if test="model.deptid != null and model.deptid != ''" >
+		and t.deptid = #{model.deptid}
+	</if>
+	 <if test="model.classid != null and model.classid != ''" >
+		and t.classid = #{model.classid}
+	</if>
+	 <if test="model.email != null and model.email != ''" >
+		and t.email = #{model.email}
+	</if>
+	 <if test="model.telphone != null and model.telphone != ''" >
+		and t.telphone = #{model.telphone}
+	</if>
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入用户记录 -->
+<insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="username">
+  insert into t_user
+(username,
+password,
+role,
+lasttime,
+realname,
+collegeid,
+deptid,
+classid,
+email,
+telphone)
+ values(#{username},
+#{password},
+#{role},
+#{lasttime},
+#{realname},
+#{collegeid},
+#{deptid},
+#{classid},
+#{email},
+#{telphone})
+</insert>
+
+<!-- 批量插入用户记录 -->
+<insert id="addBatch" parameterType="java.util.List" >
+    insert into t_user
+     (
+      username,password,role,lasttime,realname,collegeid,deptid,classid,email,telphone
+     ) 
+     values 
+    <foreach collection="list" item="item" index="index" separator="," >
+       (
+       	       	         	  	#{item.username},
+       	  	   	       	         	  	#{item.password},
+       	  	   	       	         	  	#{item.role},
+       	  	   	       	         	  	#{item.lasttime},
+       	  	   	       	         	  	#{item.realname},
+       	  	   	       	         	  	#{item.collegeid},
+       	  	   	       	         	  	#{item.deptid},
+       	  	   	       	         	  	#{item.classid},
+       	  	   	       	         	  	#{item.email},
+       	  	   	       	         	  	#{item.telphone}
+       	  	   		   )
+    </foreach>
+  </insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update t_user set   password=#{password},
+  role=#{role},
+  lasttime=#{lasttime},
+  realname=#{realname},
+  collegeid=#{collegeid},
+  deptid=#{deptid},
+  classid=#{classid},
+  email=#{email},
+  telphone=#{telphone}
+ where username=#{username}
+
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update t_user set 
+	<trim  suffixOverrides="," >
+	<if test="password != null  and password != '' ">
+		password=#{password},
+	</if>
+	<if test="role != null  and role != '' ">
+		role=#{role},
+	</if>
+	<if test="lasttime != null  ">
+		lasttime=#{lasttime},
+	</if>
+	<if test="realname != null  and realname != '' ">
+		realname=#{realname},
+	</if>
+	<if test="collegeid != null  and collegeid != '' ">
+		collegeid=#{collegeid},
+	</if>
+	<if test="deptid != null  and deptid != '' ">
+		deptid=#{deptid},
+	</if>
+	<if test="classid != null  and classid != '' ">
+		classid=#{classid},
+	</if>
+	<if test="email != null  and email != '' ">
+		email=#{email},
+	</if>
+	<if test="telphone != null  and telphone != '' ">
+		telphone=#{telphone},
+	</if>
+	</trim> where username=#{username}
+</update>
+
+<!-- 根据主键ID删除用户记录 -->
+<delete id="deleteById" parameterType="Object">
+	delete 	 from t_user
+ where username = #{username}
+</delete>
+
+<!-- 根据条件删除用户记录 -->
+<delete id="deleteBySelective" parameterType="Object">
+	delete t from t_user t
+	where 1=1 <include refid="Where_Condition"/>
+</delete>
+ 
+<!-- 根据主键id查询用户对象 -->
+<select id="getById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Columns" /> 
+	 from t_user t where username = #{username}
+</select>
+
+<!-- 根据条件查询单个用户对象  -->
+<select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
+	select 
+	<include refid="Base_Columns"/>
+	from t_user t
+	where 1=1 <include refid="Where_Condition"/>
+	limit 0,1
+</select>
+
+<!-- 用户列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from t_user t
+	where 1=1
+	<include refid="Where_Condition"/>
+</select>
+  	
+<!-- 查询用户列表 -->
+<select id="queryList" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Columns"/>
+	from t_user t
+	where 1=1
+	<include refid="Where_Condition"/>
+	<if test="pager != null">
+		<if test="pager.orderCondition!=null and pager.orderCondition!=''">
+		${pager.orderCondition}
+		</if>
+	    limit #{pager.beginIndex},#{pager.pageSize}
+	</if>
+</select>
+ 	
+</mapper>   

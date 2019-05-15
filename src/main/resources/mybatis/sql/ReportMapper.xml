@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paper.papermgt.mapper.ReportMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.paper.papermgt.model.ReportModel" >
+	<result column="id" property="id"/>
+	<result column="taskid" property="taskid"/>
+	<result column="overview" property="overview"/>
+	<result column="goal" property="goal"/>
+	<result column="method" property="method"/>
+	<result column="innovation" property="innovation"/>
+	<result column="progress" property="progress"/>
+	<result column="requirement" property="requirement"/>
+	<result column="teaopinion" property="teaopinion"/>
+	<result column="deptopinion" property="deptopinion"/>
+	<result column="subtime" property="subtime"/>
+</resultMap>
+       
+<!-- t_report table all fields -->
+<sql id="Base_Columns" >
+	  t.id as id,
+  t.taskid as taskid,
+  t.overview as overview,
+  t.goal as goal,
+  t.method as method,
+  t.innovation as innovation,
+  t.progress as progress,
+  t.requirement as requirement,
+  t.teaopinion as teaopinion,
+  t.deptopinion as deptopinion,
+  t.subtime as subtime
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Condition">
+<trim  suffixOverrides="," >
+<if test="model != null " >
+	<if test="model.id != null" >
+		and t.id = #{model.id}
+	</if>
+	<if test="model.taskid != null" >
+		and t.taskid = #{model.taskid}
+	</if>
+	 <if test="model.overview != null and model.overview != ''" >
+		and t.overview = #{model.overview}
+	</if>
+	 <if test="model.goal != null and model.goal != ''" >
+		and t.goal = #{model.goal}
+	</if>
+	 <if test="model.method != null and model.method != ''" >
+		and t.method = #{model.method}
+	</if>
+	 <if test="model.innovation != null and model.innovation != ''" >
+		and t.innovation = #{model.innovation}
+	</if>
+	 <if test="model.progress != null and model.progress != ''" >
+		and t.progress = #{model.progress}
+	</if>
+	 <if test="model.requirement != null and model.requirement != ''" >
+		and t.requirement = #{model.requirement}
+	</if>
+	 <if test="model.teaopinion != null and model.teaopinion != ''" >
+		and t.teaopinion = #{model.teaopinion}
+	</if>
+	 <if test="model.deptopinion != null and model.deptopinion != ''" >
+		and t.deptopinion = #{model.deptopinion}
+	</if>
+	<if test="model.subtime != null" >
+		and t.subtime = #{model.subtime}
+	</if>
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入报告记录 -->
+<insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+  insert into t_report
+(id,
+taskid,
+overview,
+goal,
+method,
+innovation,
+progress,
+requirement,
+teaopinion,
+deptopinion,
+subtime)
+ values(#{id},
+#{taskid},
+#{overview},
+#{goal},
+#{method},
+#{innovation},
+#{progress},
+#{requirement},
+#{teaopinion},
+#{deptopinion},
+#{subtime})
+</insert>
+
+<!-- 批量插入报告记录 -->
+<insert id="addBatch" parameterType="java.util.List" >
+    insert into t_report
+     (
+      id,taskid,overview,goal,method,innovation,progress,requirement,teaopinion,deptopinion,subtime
+     ) 
+     values 
+    <foreach collection="list" item="item" index="index" separator="," >
+       (
+       	       	         	  	#{item.id},
+       	  	   	       	         	  	#{item.taskid},
+       	  	   	       	         	  	#{item.overview},
+       	  	   	       	         	  	#{item.goal},
+       	  	   	       	         	  	#{item.method},
+       	  	   	       	         	  	#{item.innovation},
+       	  	   	       	         	  	#{item.progress},
+       	  	   	       	         	  	#{item.requirement},
+       	  	   	       	         	  	#{item.teaopinion},
+       	  	   	       	         	  	#{item.deptopinion},
+       	  	   	       	         	  	#{item.subtime}
+       	  	   		   )
+    </foreach>
+  </insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update t_report set   taskid=#{taskid},
+  overview=#{overview},
+  goal=#{goal},
+  method=#{method},
+  innovation=#{innovation},
+  progress=#{progress},
+  requirement=#{requirement},
+  teaopinion=#{teaopinion},
+  deptopinion=#{deptopinion},
+  subtime=#{subtime}
+ where id=#{id}
+
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update t_report set 
+	<trim  suffixOverrides="," >
+	<if test="taskid != null  ">
+		taskid=#{taskid},
+	</if>
+	<if test="overview != null  and overview != '' ">
+		overview=#{overview},
+	</if>
+	<if test="goal != null  and goal != '' ">
+		goal=#{goal},
+	</if>
+	<if test="method != null  and method != '' ">
+		method=#{method},
+	</if>
+	<if test="innovation != null  and innovation != '' ">
+		innovation=#{innovation},
+	</if>
+	<if test="progress != null  and progress != '' ">
+		progress=#{progress},
+	</if>
+	<if test="requirement != null  and requirement != '' ">
+		requirement=#{requirement},
+	</if>
+	<if test="teaopinion != null  and teaopinion != '' ">
+		teaopinion=#{teaopinion},
+	</if>
+	<if test="deptopinion != null  and deptopinion != '' ">
+		deptopinion=#{deptopinion},
+	</if>
+	<if test="subtime != null  ">
+		subtime=#{subtime},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 根据主键ID删除报告记录 -->
+<delete id="deleteById" parameterType="Object">
+	delete 	 from t_report
+ where id = #{id}
+</delete>
+
+<!-- 根据条件删除报告记录 -->
+<delete id="deleteBySelective" parameterType="Object">
+	delete t from t_report t
+	where 1=1 <include refid="Where_Condition"/>
+</delete>
+ 
+<!-- 根据主键id查询报告对象 -->
+<select id="getById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Columns" /> 
+	 from t_report t where id = #{id}
+</select>
+
+<!-- 根据条件查询单个报告对象  -->
+<select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
+	select 
+	<include refid="Base_Columns"/>
+	from t_report t
+	where 1=1 <include refid="Where_Condition"/>
+	limit 0,1
+</select>
+
+<!-- 报告列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from t_report t
+	where 1=1
+	<include refid="Where_Condition"/>
+</select>
+  	
+<!-- 查询报告列表 -->
+<select id="queryList" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Columns"/>
+	from t_report t
+	where 1=1
+	<include refid="Where_Condition"/>
+	<if test="pager != null">
+		<if test="pager.orderCondition!=null and pager.orderCondition!=''">
+		${pager.orderCondition}
+		</if>
+	    limit #{pager.beginIndex},#{pager.pageSize}
+	</if>
+</select>
+ 	
+</mapper>   
