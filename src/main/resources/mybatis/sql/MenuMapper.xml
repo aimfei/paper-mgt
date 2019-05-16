@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paper.papermgt.mapper.MenuMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.paper.papermgt.model.MenuModel" >
+	<result column="id" property="id"/>
+	<result column="roleName" property="roleName"/>
+	<result column="menuUrl" property="menuUrl"/>
+	<result column="menuName" property="menuName"/>
+	<result column="createTime" property="createTime"/>
+	<result column="modifyTime" property="modifyTime"/>
+</resultMap>
+       
+<!-- t_menu table all fields -->
+<sql id="Base_Columns" >
+	  t.id as id,
+  t.role_name as roleName,
+  t.menu_url as menuUrl,
+  t.menu_name as menuName,
+  t.create_time as createTime,
+  t.modify_time as modifyTime
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Condition">
+<trim  suffixOverrides="," >
+<if test="model != null " >
+	<if test="model.id != null" >
+		and t.id = #{model.id}
+	</if>
+	 <if test="model.roleName != null and model.roleName != ''" >
+		and t.role_name = #{model.roleName}
+	</if>
+	 <if test="model.menuUrl != null and model.menuUrl != ''" >
+		and t.menu_url = #{model.menuUrl}
+	</if>
+	 <if test="model.menuName != null and model.menuName != ''" >
+		and t.menu_name = #{model.menuName}
+	</if>
+	<if test="model.createTime != null" >
+		and t.create_time = #{model.createTime}
+	</if>
+	<if test="model.modifyTime != null" >
+		and t.modify_time = #{model.modifyTime}
+	</if>
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入菜单记录 -->
+<insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+  insert into t_menu
+(id,
+role_name,
+menu_url,
+menu_name,
+create_time,
+modify_time)
+ values(#{id},
+#{roleName},
+#{menuUrl},
+#{menuName},
+now(),
+#{modifyTime})
+</insert>
+
+<!-- 批量插入菜单记录 -->
+<insert id="addBatch" parameterType="java.util.List" >
+    insert into t_menu
+     (
+      id,role_name,menu_url,menu_name,create_time,modify_time
+     ) 
+     values 
+    <foreach collection="list" item="item" index="index" separator="," >
+       (
+       	       	         	  	#{item.id},
+       	  	   	       	         	  	#{item.roleName},
+       	  	   	       	         	  	#{item.menuUrl},
+       	  	   	       	         	  	#{item.menuName},
+       	  	   	       	         	  	#{item.createTime},
+       	  	   	       	         	  	#{item.modifyTime}
+       	  	   		   )
+    </foreach>
+  </insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update t_menu set   role_name=#{roleName},
+  menu_url=#{menuUrl},
+  menu_name=#{menuName},
+  modify_time=#{modifyTime}
+ where id=#{id}
+
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update t_menu set 
+	<trim  suffixOverrides="," >
+	<if test="roleName != null  and roleName != '' ">
+		role_name=#{roleName},
+	</if>
+	<if test="menuUrl != null  and menuUrl != '' ">
+		menu_url=#{menuUrl},
+	</if>
+	<if test="menuName != null  and menuName != '' ">
+		menu_name=#{menuName},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime},
+	</if>
+	<if test="modifyTime != null  ">
+		modify_time=#{modifyTime},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 根据主键ID删除菜单记录 -->
+<delete id="deleteById" parameterType="Object">
+	delete 	 from t_menu
+ where id = #{id}
+</delete>
+
+<!-- 根据条件删除菜单记录 -->
+<delete id="deleteBySelective" parameterType="Object">
+	delete t from t_menu t
+	where 1=1 <include refid="Where_Condition"/>
+</delete>
+ 
+<!-- 根据主键id查询菜单对象 -->
+<select id="getById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Columns" /> 
+	 from t_menu t where id = #{id}
+</select>
+
+<!-- 根据条件查询单个菜单对象  -->
+<select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
+	select 
+	<include refid="Base_Columns"/>
+	from t_menu t
+	where 1=1 <include refid="Where_Condition"/>
+	limit 0,1
+</select>
+
+<!-- 菜单列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from t_menu t
+	where 1=1
+	<include refid="Where_Condition"/>
+</select>
+  	
+<!-- 查询菜单列表 -->
+<select id="queryList" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Columns"/>
+	from t_menu t
+	where 1=1
+	<include refid="Where_Condition"/>
+	<if test="pager != null">
+		<if test="pager.orderCondition!=null and pager.orderCondition!=''">
+		${pager.orderCondition}
+		</if>
+	    limit #{pager.beginIndex},#{pager.pageSize}
+	</if>
+</select>
+ 	
+</mapper>   

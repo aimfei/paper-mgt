@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="common_menu">
+    <ul class="sf-menu" id="menuList">
+        <!--<li><a HREF="main.jsp">首页</a></li>
+        <li><a HREF="college">管理学院</a></li>
+        <li><a HREF="dept">管理专业</a></li>
+        <li><a HREF="class">管理班级</a></li>
+        <li><a HREF="adduser">注册用户</a></li>
+        <li><a HREF="notice.jsp">发布校级通知</a></li>-->
+    </ul>
+    <script>
+
+        function loadMenu() {
+            var el=$("#menuList").html("");
+            $.ajax({
+               type:"get",
+               url:'/papermgt/getMenu',
+                dataType:"json",
+                success:function(data){
+                  if (data.code==200){
+                      var el=$("#menuList")
+                      var htmlString="<li><a href= \"main.jsp\">首页</a></li>";
+                      $.each(data.data,function (index,value){
+                          htmlString +="<li><a href=\""+value.menuUrl+"\">"+value.menuName+"</a></li>";
+                      })
+                      el.append(htmlString);
+                  }
+                }
+            });
+        }
+
+    </script>
+</div>
+</body>
+</html>

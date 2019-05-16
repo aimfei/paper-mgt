@@ -5,6 +5,14 @@ spring:
     username: root
     password: password
     type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    encoding: UTF-8
+    cache: false
+    suffix: .html
+  resources:
+    static-locations: classpath:/static
 
 mybatis:
   mapper-locations: classpath:mybatis/sql/*Mapper.xml
