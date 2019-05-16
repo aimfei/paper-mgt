@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 15/05/2019 18:23:36
+ Date: 16/05/2019 17:39:34
 */
 
 SET NAMES utf8mb4;
@@ -92,6 +92,36 @@ INSERT INTO `t_dept` VALUES ('192', '计算机科学与技术', '19');
 INSERT INTO `t_dept` VALUES ('193', '网络工程', '19');
 INSERT INTO `t_dept` VALUES ('301', '测试专业1', '30');
 INSERT INTO `t_dept` VALUES ('302', '测试专业2', '30');
+
+-- ----------------------------
+-- Table structure for t_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `t_menu`;
+CREATE TABLE `t_menu`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `menu_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `menu_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `modify_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_menu
+-- ----------------------------
+INSERT INTO `t_menu` VALUES (1, 'sysadmin', NULL, '管理学院', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (2, 'sysadmin', NULL, '管理专业', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (3, 'sysadmin', NULL, '管理班级', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (4, 'sysadmin', NULL, '注册用户', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (5, 'sysadmin', NULL, '发布通知', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (6, 'teacher', NULL, '发布课题', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (7, 'teacher', NULL, '课题状态', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (8, 'teacher', NULL, '消息', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (9, 'student', NULL, '我要选题', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (10, 'student', NULL, '报告状态', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (11, 'student', NULL, '论文', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
+INSERT INTO `t_menu` VALUES (12, 'student', NULL, '消息', '2019-05-16 16:36:43', '2019-05-16 16:36:45');
 
 -- ----------------------------
 -- Table structure for t_notice
