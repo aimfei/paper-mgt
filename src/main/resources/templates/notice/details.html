@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/common_resource::common_resource"></div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            /* setup navigation, content boxes, etc... */
+            Administry.setup();
+            loadMenu();
+        });
+
+    </script>
+    <title>公告详情</title>
+</head>
+<body>
+ <div th:replace="/common/common_header::common_header"></div>
+
+ <div id="pagetitle">
+     <div class="wrapper">
+         <h1>位置>>公告详情</h1>
+         <!-- Quick search box -->
+         <form action="notexist" method="post"><input class="" type="text" id="q" name="q" /></form>
+     </div>
+ </div>
+
+ <div id="page">
+     <!-- Wrapper -->
+     <div class="wrapper">
+
+         <div  class="column width6 first">
+             <h2 class="center" align="center" th:text="${notice.ntitle }"></h2>
+             <hr/>
+             <p class="center" align="center" th:text="${'发布时间：'+#dates.format(notice.time, 'yyyy-MM-dd HH:mm') }"></p>
+             <p class="ta-justify" th:text="${notice.ncontent }"></p>
+
+         </div>
+
+         <!-- Right column/section -->
+         <aside class="column width2">
+            <div th:replace="/common/common_right::common_right"></div>
+         </aside>
+         <!-- End of Right column/section -->
+
+     </div>
+     <!-- End of Wrapper -->
+ </div>
+
+
+
+
+</body>
+</html>

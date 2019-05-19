@@ -15,5 +15,121 @@
 </head>
 <body>
  <div th:replace="/common/common_header::common_header"></div>
+
+ <div id="pagetitle">
+     <div class="wrapper">
+         <h1>位置>>首页</h1>
+         <!-- Quick search box -->
+         <form action="notexist" method="post"><input class="" type="text" id="q" name="q" /></form>
+     </div>
+ </div>
+
+
+ <div id="page">
+     <!-- Wrapper -->
+     <div class="wrapper">
+
+         <!-- Left column/section -->
+         <section class="column width6 first">
+
+             <div class="colgroup leading">
+                 <div class="column width3 first">
+                     <h3>欢迎回来，
+
+                             <a href="userinfo" th:text="萝卜"></a>
+                     </h3>
+
+                     <p>
+                         您的身份是<b>
+                         学生
+                     </b>.<br />
+                     </p>
+                 </div>
+                 <div class="column width3">
+
+                         <h4>您是首次登录</h4>
+                         <p class="box box-info">请完善个人资料！</p>
+                         <h4>上次登录时间</h4>
+                         <p>
+                         </p>
+
+                 </div>
+             </div>
+
+             <div class="colgroup leading">
+                 <div  class="column width3 first" >
+                     <h4>校级通知：
+                         <a href="morenotice?scope=all">more</a>
+                     </h4>
+                     <hr/>
+                     <table class="no-style full">
+                         <tbody>
+                         <!--<s:iterator value="#session.allList" id="a">-->
+                         <tr th:each="sysItem:${sysNoticeList}">
+                             <td ><a th:href="${#request.getContextPath()+'/notice/'+sysItem.id+'/details'}" th:text="${sysItem.ntitle}"></a></td>
+                             <td></td>
+                             <td th:text="${#dates.format(sysItem.time, 'yyyy-MM-dd HH:mm')}"></td>
+                         </tr>
+                         <!--</s:iterator>-->
+                         </tbody>
+                     </table>
+                 </div>
+                 <div class="column width3">
+                     <h4>最新通知：
+                         <a href="">more</a>
+                     </h4>
+                     <hr/>
+                     <table class="no-style full">
+                         <tbody>
+                         <!--<s:iterator value="#session.allList" id="a">-->
+                         <tr th:each="sysItem:${collNoticeList}">
+                             <td ><a th:href="${#request.getContextPath()+'/notice/'+sysItem.id+'/details'}" th:text="${sysItem.ntitle}"></a></td>
+                             <td></td>
+                             <td th:text="${#dates.format(sysItem.time, 'yyyy-MM-dd HH:mm')}"></td>
+                         </tr>
+                         <!--</s:iterator>-->
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+
+
+             <div class="clear">&nbsp;</div>
+
+         </section>
+         <!-- End of Left column/section -->
+
+
+         <!-- Right column/section -->
+         <aside class="column width2">
+             <div class="content-box">
+                 <header>
+                     <h3>注意事项：</h3>
+                 </header>
+                 <section>
+                     <dl>
+                         <dt>开题答辩时间：<a>3月14号</a></dt>
+                         <dt>中期检查时间：<a>4月11号</a></dt>
+                         <dt>毕业答辩时间：<a>5月16号</a></dt>
+                     </dl>
+                 </section>
+             </div>
+             <div class="content-box">
+                 <header>
+                     <h3>校内链接</h3>
+                 </header>
+                 <section>
+                     <dl>
+
+                     </dl>
+                 </section>
+             </div>
+         </aside>
+         <!-- End of Right column/section -->
+
+     </div>
+     <!-- End of Wrapper -->
+ </div>
+
 </body>
 </html>

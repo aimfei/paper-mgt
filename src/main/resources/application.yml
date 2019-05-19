@@ -13,7 +13,9 @@ spring:
     suffix: .html
   resources:
     static-locations: classpath:/static
-
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
 mybatis:
   mapper-locations: classpath:mybatis/sql/*Mapper.xml
 server:
@@ -26,5 +28,5 @@ logging:
     root: info
     org.springframework.web: info
     org.mybatis: debug
-  config: classpath:logback.xml
+#  config: classpath:logback.xml
 
