@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/common_resource::common_resource"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            /* setup navigation, content boxes, etc... */
+            Administry.setup();
+            loadMenu();
+        });
+
+    </script>
+    <title>公告详情</title>
+</head>
+<body>
+<div th:replace="/common/common_header::common_header"></div>
+
+<div id="pagetitle">
+    <div class="wrapper">
+        <h1>位置>>个人信息</h1>
+        <!-- Quick search box -->
+        <form action="notexist" method="post"><input class="" type="text" id="q" name="q"/></form>
+    </div>
+</div>
+
+<div id="page">
+    <!-- Wrapper -->
+    <div class="wrapper">
+
+        <div class="column width6 first">
+
+            <p th:text="${'登录名：'+user.username}"></p>
+            <p th:text="${'邮箱：'+user.email}"></p>
+            <p th:text="${'姓名：'+user.realname}"></p>
+            <p th:text="${'角色：'+user.role}"></p>
+            <p th:text="${'电话：'+user.telphone}"></p>
+
+            <p th:text="${'专业：'+dept}"></p>
+            <p th:text="${'学院：'+college}"></p>
+            <p th:text="${'班级：'+className}"></p>
+
+        </div>
+
+        <!-- Right column/section -->
+        <aside class="column width2">
+            <div th:replace="/common/common_right::common_right"></div>
+        </aside>
+        <!-- End of Right column/section -->
+
+    </div>
+    <!-- End of Wrapper -->
+</div>
+
+
+</body>
+</html>

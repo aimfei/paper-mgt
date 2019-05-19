@@ -10,18 +10,19 @@ import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-public class MenuController {
+public class MenuController extends  BaseController {
 
   @Autowired private MenuService menuService;
 
   @GetMapping("/getMenu")
   @ResponseBody
-  public ApiResponse<List<MenuModel>> getMenu() {
+  public ApiResponse<List<MenuModel>> getMenu(HttpServletRequest request) {
     MenuModel model = new MenuModel();
-    model.setRoleName("sysadmin");
+    model.setRoleName(super.getRole(request).getRoleName());
     List<MenuModel> list = menuService.queryList(model, null);
     return new ApiResponse<>(list);
   }

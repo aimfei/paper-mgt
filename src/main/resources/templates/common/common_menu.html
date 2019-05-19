@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="common_menu">
+    <input type="hidden" id="baseurl" th:value="${#request.getContextPath()}">
     <ul class="sf-menu" id="menuList">
         <!--<li><a HREF="main.jsp">首页</a></li>
         <li><a HREF="college">管理学院</a></li>
@@ -10,21 +11,24 @@
         <li><a HREF="adduser">注册用户</a></li>
         <li><a HREF="notice.jsp">发布校级通知</a></li>-->
     </ul>
-    <script>
-
-        function loadMenu() {
-            var el=$("#menuList").html("");
-            $.ajax({
-               type:"get",
-               url:'/papermgt/getMenu',
-                dataType:"json",
-                success:function(data){
-                  if (data.code==200){
-                      var el=$("#menuList")
-                      var htmlString="<li><a href= \"main.jsp\">首页</a></li>";
-                      $.each(data.data,function (index,value){
-                          htmlString +="<li><a href=\""+value.menuUrl+"\">"+value.menuName+"</a></li>";
-                      })
+    <script th:inline="javascript">
+        var baseUrl=[[${#request.getContextPath()}]];
+        var c= [[${#request.getScheme()}]];
+        var url=[[${#request.getServerName()+'://'+#request.getServerName()+':'+#request.getServerPort()+#request.getContextPath()+'/'}]];
+       // +'://'+#request.getServerName()+':'+#request.getServerPort()+#request.getContextPath+'/'}
+          function loadMenu() {
+              var el=$("#menuList").html("");
+              $.ajax({
+                 type:"get",
+                 url:$("#baseurl").val()+'/getMenu',
+                  dataType:"json",
+                  success:function(data){
+                    if (data.code==200){
+                        var el=$("#menuList")
+                        var htmlString="";
+                        $.each(data.data,function (index,value){
+                            htmlString +="<li><a href=\""+value.menuUrl+"\">"+value.menuName+"</a></li>";
+                        })
                       el.append(htmlString);
                   }
                 }

@@ -4,6 +4,8 @@ package com.paper.papermgt.service;
 import com.common.framework.base.BaseService;
 import com.paper.papermgt.model.TopicModel;
 
+import java.util.List;
+
 /**
  * 描述
  * @ClassName: TopicService
@@ -13,4 +15,5 @@ import com.paper.papermgt.model.TopicModel;
  */
 public interface TopicService extends BaseService<TopicModel> {
 
+     List<TopicModel> getList(List<String> teaids);
 }

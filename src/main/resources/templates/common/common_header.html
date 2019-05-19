@@ -6,7 +6,7 @@
     <!-- Top navigation -->
     <div id="topnav">
         <a href="#"><img class="avatar" th:src="@{image/user_32.png}" alt="" /></a>
-        <span>|</span> <a href="logout">注销</a><br />
+        <span>|</span> <a th:href="${#request.getContextPath()+'/logout'}">注销</a><br />
     </div>
     <!-- End of Top navigation -->
     <!-- Main navigation -->

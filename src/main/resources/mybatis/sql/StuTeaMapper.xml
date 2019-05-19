@@ -2,25 +2,21 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.paper.papermgt.mapper.TopicMapper" > 
+<mapper namespace="com.paper.papermgt.mapper.StuTeaMapper" >
 <!-- Result Map-->
-<resultMap id="BaseResultMap" type="com.paper.papermgt.model.TopicModel" >
+<resultMap id="BaseResultMap" type="com.paper.papermgt.model.StuTeaModel" >
 	<result column="id" property="id"/>
-	<result column="topicName" property="topicName"/>
-	<result column="topicDesc" property="topicDesc"/>
-	<result column="stuId" property="stuId"/>
-	<result column="teaId" property="teaId"/>
+	<result column="stuname" property="stuname"/>
+	<result column="teaname" property="teaname"/>
 	<result column="createTime" property="createTime"/>
 	<result column="modifyTime" property="modifyTime"/>
 </resultMap>
        
-<!-- t_topic table all fields -->
+<!-- t_stu_tea table all fields -->
 <sql id="Base_Columns" >
 	  t.id as id,
-  t.topic_name as topicName,
-  t.topic_desc as topicDesc,
-  t.stu_id as stuId,
-  t.tea_id as teaId,
+  t.stuname as stuname,
+  t.teaname as teaname,
   t.create_time as createTime,
   t.modify_time as modifyTime
 </sql>
@@ -32,17 +28,11 @@
 	<if test="model.id != null" >
 		and t.id = #{model.id}
 	</if>
-	 <if test="model.topicName != null and model.topicName != ''" >
-		and t.topic_name = #{model.topicName}
+	 <if test="model.stuname != null and model.stuname != ''" >
+		and t.stuname = #{model.stuname}
 	</if>
-	 <if test="model.topicDesc != null and model.topicDesc != ''" >
-		and t.topic_desc = #{model.topicDesc}
-	</if>
-	<if test="model.stuId != null" >
-		and t.stu_id = #{model.stuId}
-	</if>
-	<if test="model.teaId != null" >
-		and t.tea_id = #{model.teaId}
+	 <if test="model.teaname != null and model.teaname != ''" >
+		and t.teaname = #{model.teaname}
 	</if>
 	<if test="model.createTime != null" >
 		and t.create_time = #{model.createTime}
@@ -55,39 +45,33 @@
 </sql>
    
 
-<!-- 插入论文记录 -->
+<!-- 插入测试表记录 -->
 <insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
-  insert into t_topic
+  insert into t_stu_tea
 (id,
-topic_name,
-topic_desc,
-stu_id,
-tea_id,
+stuname,
+teaname,
 create_time,
 modify_time)
  values(#{id},
-#{topicName},
-#{topicDesc},
-#{stuId},
-#{teaId},
+#{stuname},
+#{teaname},
 now(),
 #{modifyTime})
 </insert>
 
-<!-- 批量插入论文记录 -->
+<!-- 批量插入测试表记录 -->
 <insert id="addBatch" parameterType="java.util.List" >
-    insert into t_topic
+    insert into t_stu_tea
      (
-      id,topic_name,topic_desc,stu_id,tea_id,create_time,modify_time
+      id,stuname,teaname,create_time,modify_time
      ) 
      values 
     <foreach collection="list" item="item" index="index" separator="," >
        (
        	       	         	  	#{item.id},
-       	  	   	       	         	  	#{item.topicName},
-       	  	   	       	         	  	#{item.topicDesc},
-       	  	   	       	         	  	#{item.stuId},
-       	  	   	       	         	  	#{item.teaId},
+       	  	   	       	         	  	#{item.stuname},
+       	  	   	       	         	  	#{item.teaname},
        	  	   	       	         	  	#{item.createTime},
        	  	   	       	         	  	#{item.modifyTime}
        	  	   		   )
@@ -96,10 +80,8 @@ now(),
 
 <!-- 根据id，修改记录-->  
  <update id="update" parameterType="Object" >
-  update t_topic set   topic_name=#{topicName},
-  topic_desc=#{topicDesc},
-  stu_id=#{stuId},
-  tea_id=#{teaId},
+  update t_stu_tea set   stuname=#{stuname},
+  teaname=#{teaname},
   modify_time=#{modifyTime}
  where id=#{id}
 
@@ -107,19 +89,13 @@ now(),
  
  <!-- 修改记录，只修改只不为空的字段 -->
 <update id="updateBySelective" parameterType="Object" >
-	update t_topic set 
+	update t_stu_tea set 
 	<trim  suffixOverrides="," >
-	<if test="topicName != null  and topicName != '' ">
-		topic_name=#{topicName},
+	<if test="stuname != null  and stuname != '' ">
+		stuname=#{stuname},
 	</if>
-	<if test="topicDesc != null  and topicDesc != '' ">
-		topic_desc=#{topicDesc},
-	</if>
-	<if test="stuId != null  ">
-		stu_id=#{stuId},
-	</if>
-	<if test="teaId != null  ">
-		tea_id=#{teaId},
+	<if test="teaname != null  and teaname != '' ">
+		teaname=#{teaname},
 	</if>
 	<if test="createTime != null  ">
 		create_time=#{createTime},
@@ -130,45 +106,45 @@ now(),
 	</trim> where id=#{id}
 </update>
 
-<!-- 根据主键ID删除论文记录 -->
+<!-- 根据主键ID删除测试表记录 -->
 <delete id="deleteById" parameterType="Object">
-	delete 	 from t_topic
+	delete 	 from t_stu_tea
  where id = #{id}
 </delete>
 
-<!-- 根据条件删除论文记录 -->
+<!-- 根据条件删除测试表记录 -->
 <delete id="deleteBySelective" parameterType="Object">
-	delete t from t_topic t
+	delete t from t_stu_tea t
 	where 1=1 <include refid="Where_Condition"/>
 </delete>
  
-<!-- 根据主键id查询论文对象 -->
+<!-- 根据主键id查询测试表对象 -->
 <select id="getById"  resultMap="BaseResultMap" parameterType="Object">
 	select <include refid="Base_Columns" /> 
-	 from t_topic t where id = #{id}
+	 from t_stu_tea t where id = #{id}
 </select>
 
-<!-- 根据条件查询单个论文对象  -->
+<!-- 根据条件查询单个测试表对象  -->
 <select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
 	select 
 	<include refid="Base_Columns"/>
-	from t_topic t
+	from t_stu_tea t
 	where 1=1 <include refid="Where_Condition"/>
 	limit 0,1
 </select>
 
-<!-- 论文列表总数-->
+<!-- 测试表列表总数-->
 <select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
-	select count(1) from t_topic t
+	select count(1) from t_stu_tea t
 	where 1=1
 	<include refid="Where_Condition"/>
 </select>
   	
-<!-- 查询论文列表 -->
+<!-- 查询测试表列表 -->
 <select id="queryList" resultMap="BaseResultMap">
 	select 
 	<include refid="Base_Columns"/>
-	from t_topic t
+	from t_stu_tea t
 	where 1=1
 	<include refid="Where_Condition"/>
 	<if test="pager != null">
@@ -178,17 +154,5 @@ now(),
 	    limit #{pager.beginIndex},#{pager.pageSize}
 	</if>
 </select>
-
-	<select id="getList" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Columns"/>
-		from t_topic t
-		where 1=1
-		  and t.tea_id in
-		<foreach collection="teaids" open="(" close=")" separator="," item="item">
-			#{item}
-		</foreach>
-
-	</select>
  	
 </mapper>   

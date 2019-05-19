@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/common_resource::common_resource"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            /* setup navigation, content boxes, etc... */
+            Administry.setup();
+            loadMenu();
+        });
+
+    </script>
+    <title>添加课题</title>
+</head>
+<body>
+<div th:replace="/common/common_header::common_header"></div>
+
+<div id="pagetitle">
+    <div class="wrapper">
+        <h1>位置>>添加课题</h1>
+        <!-- Quick search box -->
+        <form action="notexist" method="post"><input class="" type="text" id="q" name="q"/></form>
+    </div>
+</div>
+
+<div id="page">
+    <!-- Wrapper -->
+    <div class="wrapper">
+
+        <section class="full">
+
+            <form id="loginform" method="post" th:action="${#request.getContextPath()+'/topic/add'}">
+
+                <p>
+                    <label class="required" for="topicName">课题名称：</label><br/>
+                    <input type="text" id="topicName" class="full" value="" name="topicName"/>
+                </p>
+
+                <p>
+                    <label class="required" for="topicDesc">课题描述：</label><br/>
+                    <textarea rows="25" id="topicDesc" class="full" name="topicDesc">
+                     </textarea>
+                </p>
+
+
+                <p style="float: right">
+                    <input type="submit" class="btn btn-green big" value="添加"/> &nbsp;
+                    <input type="reset" class="btn btn-green big" value="取消"/>
+                </p>
+                <div class="clear">&nbsp;</div>
+
+            </form>
+        </section>
+
+    </div>
+    <!-- End of Wrapper -->
+</div>
+
+
+</body>
+</html>

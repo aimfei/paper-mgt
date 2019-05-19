@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/common_resource::common_resource"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            /* setup navigation, content boxes, etc... */
+            Administry.setup();
+            loadMenu();
+        });
+
+    </script>
+    <title>添加课题</title>
+</head>
+<body>
+<div th:replace="/common/common_header::common_header"></div>
+
+<div id="pagetitle">
+    <div class="wrapper">
+        <h1>位置>>课题列表</h1>
+        <!-- Quick search box -->
+        <form action="notexist" method="post"><input class="" type="text" id="q" name="q"/></form>
+    </div>
+</div>
+
+<div id="page">
+    <!-- Wrapper -->
+    <div class="wrapper">
+
+        <table class="no-style full">
+            <thead>
+               <tr>
+                  <td>课题名称</td>
+                   <td>学生</td>
+                   <td>创建时间</td>
+               </tr>
+            </thead>
+            <tbody>
+            <!--<s:iterator value="#session.allList" id="a">-->
+            <tr th:each="topic:${topicTists}">
+                <td ><a th:href="${#request.getContextPath()+'/topic/'+topic.id+'/details'}" th:text="${topic.topicName}"></a></td>
+                <td th:text="${topic.stuId}"></td>
+                <td th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            <!--</s:iterator>-->
+            </tbody>
+        </table>
+    </div>
+    <!-- End of Wrapper -->
+</div>
+
+
+</body>
+</html>

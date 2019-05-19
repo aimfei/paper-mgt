@@ -35,23 +35,25 @@
              <div class="colgroup leading">
                  <div class="column width3 first">
                      <h3>欢迎回来，
-
-                             <a href="userinfo" th:text="萝卜"></a>
+                             <a href="userinfo" th:text="${username}"></a>
                      </h3>
 
                      <p>
-                         您的身份是<b>
-                         学生
-                     </b>.<br />
+                         您的身份是<b th:text="${roleName}"></b><br />
                      </p>
                  </div>
                  <div class="column width3">
 
-                         <h4>您是首次登录</h4>
-                         <p class="box box-info">请完善个人资料！</p>
-                         <h4>上次登录时间</h4>
-                         <p>
-                         </p>
+                      <div>
+                          <h4>您是首次登录</h4>
+                          <p th:if="${lastTime}==null" class="box box-info">请完善个人资料！</p>
+                      </div>
+                        <div th:if="${lastTime}!=null">
+                            <h4>上次登录时间</h4>
+                            <p th:text="${#dates.format(lastTime,'yyyy-MM-dd HH:mm:ss')}"></p>
+
+                        </div>
+
 
                  </div>
              </div>

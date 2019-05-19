@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 描述
  * @ClassName: TopicServiceImpl
@@ -30,4 +32,8 @@ public class TopicServiceImpl extends BaseServiceImpl<TopicModel> implements Top
 		return mapper;
 	}
 
+	@Override
+	public List<TopicModel> getList(List<String> teaids) {
+		return mapper.getList(teaids);
+	}
 }

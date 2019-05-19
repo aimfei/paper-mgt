@@ -1,6 +1,7 @@
 package com.paper.papermgt.controller;
 
 import com.common.framework.pagination.Pager;
+import com.paper.papermgt.enums.RoleEnum;
 import com.paper.papermgt.model.NoticeModel;
 import com.paper.papermgt.model.UserModel;
 import com.paper.papermgt.service.NoticeService;
@@ -16,7 +17,7 @@ import sun.security.krb5.internal.PAData;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class IndexController {
+public class IndexController extends BaseController {
 
     @Autowired
     private NoticeService noticeService;
@@ -26,51 +27,62 @@ public class IndexController {
 
 
     @GetMapping("/index")
-    public ModelAndView index(ModelAndView modelAndView){
+    public ModelAndView index(HttpServletRequest request, ModelAndView modelAndView) {
 
-        Pager pager=new Pager();
+        Pager pager = new Pager();
         pager.setPageSize(5);
         pager.setSort("time");
         pager.setOrder(Pager.DESC);
 
         modelAndView.setViewName("index");
-        NoticeModel noticeModel=new NoticeModel();
+        NoticeModel noticeModel = new NoticeModel();
         noticeModel.setScope("all");
-        modelAndView.addObject("sysNoticeList",noticeService.queryList(noticeModel,pager));
-        modelAndView.addObject("collNoticeList",noticeService.queryList(noticeModel,pager));
+        modelAndView.addObject("sysNoticeList", noticeService.queryList(noticeModel, pager));
+        modelAndView.addObject("collNoticeList", noticeService.queryList(noticeModel, pager));
+        UserModel userModel = getSession(request);
+        modelAndView.addObject("username", userModel.getUsername());
+        modelAndView.addObject("lastTime", userModel.getLasttime());
+        modelAndView.addObject("roleName", RoleEnum.getRole(userModel.getRole()).getDesc());
         return modelAndView;
     }
 
 
     @GetMapping("/loginPager")
-    public ModelAndView loginPager(ModelAndView modelAndView){
+    public ModelAndView loginPager(ModelAndView modelAndView) {
         modelAndView.setViewName("login");
         return modelAndView;
     }
 
 
-
     @PostMapping("/login")
-    public  ModelAndView login(HttpServletRequest request,ModelAndView modelAndView,String username,String password){
-        UserModel userModel=new UserModel();
+    public ModelAndView login(HttpServletRequest request, ModelAndView modelAndView, String username, String password) {
+        UserModel userModel = new UserModel();
         userModel.setUsername(username);
-        userModel=userService.getOneBySelective(userModel);
-        if (userModel==null){
+        userModel = userService.getOneBySelective(userModel);
+        if (userModel == null) {
             modelAndView.setViewName("login");
-            modelAndView.addObject("errInfo","未找到该用户信息");
+            modelAndView.addObject("errInfo", "未找到该用户信息");
             return modelAndView;
 
         }
-        if (!userModel.getPassword().equals(password)){
+        if (!userModel.getPassword().equals(password)) {
             modelAndView.setViewName("login");
-            modelAndView.addObject("errInfo","用户名或者密码错误");
+            modelAndView.addObject("errInfo", "用户名或者密码错误");
             return modelAndView;
         }
 
-        request.getSession().setAttribute("user",userModel);
+        request.getSession().setAttribute("user", userModel);
 
 
-        return  index(modelAndView);
+        return index(request, modelAndView);
+
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(HttpServletRequest request, ModelAndView modelAndView) {
+
+        request.getSession().removeAttribute("user");
+        return loginPager(modelAndView);
 
     }
 }
