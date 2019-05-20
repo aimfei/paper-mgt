@@ -1,11 +1,7 @@
 package com.paper.papermgt.controller;
 
-import com.paper.papermgt.model.ClassModel;
-import com.paper.papermgt.model.CollegeModel;
-import com.paper.papermgt.model.DeptModel;
-import com.paper.papermgt.service.ClassService;
-import com.paper.papermgt.service.CollegeService;
-import com.paper.papermgt.service.DeptService;
+import com.paper.papermgt.model.*;
+import com.paper.papermgt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +23,12 @@ public class MgtController extends BaseController {
     @Autowired
     private ClassService classService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private NoticeService noticeService;
+
 
     @RequestMapping("/{mgtType}/addPager")
     public ModelAndView addCollPager(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("mgtType") Integer mgtType) {
@@ -44,7 +46,15 @@ public class MgtController extends BaseController {
                 modelAndView.setViewName("mgt/add_class");
                 modelAndView.addObject("collList", collegeService.queryList(new CollegeModel(), null));
                 modelAndView.addObject("deptList", deptService.queryList(new DeptModel(), null));
-                ;
+                break;
+            case 4:
+                modelAndView.setViewName("mgt/add_personal");
+                modelAndView.addObject("collList", collegeService.queryList(new CollegeModel(), null));
+                modelAndView.addObject("deptList", deptService.queryList(new DeptModel(), null));
+                modelAndView.addObject("classList", classService.queryList(new ClassModel(), null));
+                break;
+            case 5:
+                modelAndView.setViewName("mgt/add_notice");
         }
 
 
@@ -68,6 +78,20 @@ public class MgtController extends BaseController {
     @RequestMapping("/addClass")
     public ModelAndView addClass(HttpServletRequest request, ModelAndView modelAndView, ClassModel classModel) {
         classService.add(classModel);
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
+
+    @RequestMapping("/addPersonal")
+    public ModelAndView addPersonal(HttpServletRequest request, ModelAndView modelAndView, UserModel userModel) {
+        userService.add(userModel);
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
+
+    @RequestMapping("/addNotice")
+    public ModelAndView addNotice(HttpServletRequest request, ModelAndView modelAndView, NoticeModel noticeModel) {
+        noticeService.add(noticeModel);
         modelAndView.setViewName("index");
         return modelAndView;
     }
