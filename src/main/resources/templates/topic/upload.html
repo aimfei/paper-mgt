@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="common/common_resource::common_resource"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            /* setup navigation, content boxes, etc... */
+            Administry.setup();
+            loadMenu();
+        });
+
+    </script>
+    <title>添加课题</title>
+</head>
+<body>
+<div th:replace="/common/common_header::common_header"></div>
+
+<div id="pagetitle">
+    <div class="wrapper">
+        <h1>位置>>上传论文</h1>
+        <!-- Quick search box -->
+        <form action="notexist" method="post"><input class="" type="text" id="q" name="q"/></form>
+    </div>
+</div>
+
+<div id="page">
+
+    <div class="wrapper">
+
+        <section  class="column width6 first">
+            <div class="colgroup leading" style="padding-right: 5px">
+                <div class="column width3 first">
+                    <form enctype="multipart/form-data" id="addcollege"  method="post" th:action="${#request.getContextPath()+'/topic/upload'}">
+
+                        <fieldset>
+                            <legend th:text="${errInfo}"></legend>
+                            <p>
+                                <label class="required" for="topicFile">文件：</label><br/>
+                                <input type="file" id="topicFile" class="half" value="" name="topicFile"/>
+                            </p>
+
+
+                            <p>
+                                <input type="submit" class="btn btn-green big" value="上传论文"/>
+                                or
+                                <input type="reset" class="btn" value="重置"/>
+                            </p>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <div class="colgroup leading">
+                <div class="column width3 first">
+                    <fieldset>
+                        <legend th:text="${errorInfo}"></legend>
+                        <table>
+                            <tr style="margin-top: 5px; padding-right: 4px;" th:each="coll:${deptList}">
+                                <td th:text="${coll.dname}"></td>
+                                <td><a th:href="${#request.getContextPath()+'/mgt/2/'+coll.id+'/delete'}" th:text="删除"></a></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </div>
+            </div>
+
+
+            <div class="clear">&nbsp;</div>
+        </section>
+
+        <aside class="column width2">
+            <div class="content-box">
+                <header>
+                    <h3>注意事项：</h3>
+                </header>
+                <section>
+                    <dl>
+                        <dt>开题答辩时间：<a>3月14号</a></dt>
+                        <dt>中期检查时间：<a>4月11号</a></dt>
+                        <dt>毕业答辩时间：<a>5月16号</a></dt>
+                    </dl>
+                </section>
+            </div>
+            <div class="content-box">
+                <header>
+                    <h3>校内链接</h3>
+                </header>
+                <section>
+                    <dl>
+
+                    </dl>
+                </section>
+            </div>
+        </aside>
+    </div>
+    <!-- End of Wrapper -->
+</div>
+
+
+</body>
+</html>

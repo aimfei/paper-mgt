@@ -7,11 +7,14 @@ import com.paper.papermgt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -126,6 +129,37 @@ public class TopicController extends BaseController {
     public ModelAndView details(ModelAndView modelAndView, @PathVariable("id") Integer id) {
         modelAndView.addObject("topic", topicService.getById(id));
         modelAndView.setViewName("topic/details");
+        return modelAndView;
+    }
+
+    @RequestMapping("/uploadPager")
+    public ModelAndView uploadPager(ModelAndView modelAndView){
+        modelAndView.setViewName("topic/upload");
+        return modelAndView;
+    }
+
+    @PostMapping("/upload")
+    public ModelAndView upload(ModelAndView modelAndView,MultipartFile topicFile){
+
+        //获取文件名eques
+        String fileName = topicFile.getOriginalFilename();
+        //获取文件后缀名
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        //重新生成文件名
+        fileName = UUID.randomUUID()+suffixName;
+        //指定本地文件夹存储图片
+        String filePath = "/Users/flying/tmp/";
+        modelAndView.setViewName("index");
+        try {
+            //将图片保存到static文件夹里
+            topicFile.transferTo(new File(filePath+fileName));
+//            return new Massage(0,"success to upload");
+        } catch (Exception e) {
+            e.printStackTrace();
+//            return new Massage(-1,"fail to upload");
+        }
+        modelAndView.addObject("errorInfo","上传成功");
+        modelAndView.setViewName("topic/upload");
         return modelAndView;
     }
 }
