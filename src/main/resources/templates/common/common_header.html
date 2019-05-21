@@ -17,11 +17,11 @@
     <!-- Aside links -->
     <aside>
         <b>欢迎您：</b>
-        <a href="#">
-            萝卜
+        <a href="#" th:text="${#request.getSession().getAttribute('username')}">
+
         </a>&middot;
         <b>身份：</b>
-        <a href="#">
+        <a href="#" th:text="${#request.getSession().getAttribute('role')}">
            学生
         </a>
     </aside>

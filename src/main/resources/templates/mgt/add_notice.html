@@ -18,7 +18,7 @@
 
 <div id="pagetitle">
     <div class="wrapper">
-        <h1>位置>>添加用户</h1>
+        <h1>位置>>发布通知</h1>
         <!-- Quick search box -->
         <form action="notexist" method="post"><input class="" type="text" id="q" name="q"/></form>
     </div>
@@ -28,19 +28,26 @@
     <!-- Wrapper -->
     <div class="wrapper">
 
-        <section class="full">
+        <section class="column width6 first">
 
-            <form id="loginform" method="post" th:action="${#request.getContextPath()+'/mgt/addNotice'}">
+            <form id="sampleform" method="post" th:action="${#request.getContextPath()+'/mgt/addNotice'}">
 
                 <p>
-                    <label class="required" for="ntitle">通知标题：</label><br/>
-                    <input type="text" id="ntitle" class="full" value="" name="ntitle"/>
+                    <label class="required" for="ntitle">标题：</label><br/>
+                    <input type="text" id="ntitle" class="half title" value="" name="ntitle"/>
                 </p>
 
                 <p>
-                    <label class="required" for="ncontent">通知内容：</label><br/>
-                    <textarea rows="25" id="ncontent" class="full" name="ncontent">
-                     </textarea>
+                    <label class="required" for="collegeid">所属学院：</label><br/>
+                    <select id="collegeid" name="scope" class="half" >
+                        <option value="all">--所有学员--</option>
+                        <option th:each="item:${collList}" th:value="${item.id}" th:text="${item.cname}"></option>
+                    </select>
+                </p>
+
+                <p>
+                    <label class="required" for="ncontent">内容：</label><br/>
+                    <textarea id="ncontent" class="large full" name="ncontent"></textarea>
                 </p>
 
 
@@ -52,6 +59,31 @@
 
             </form>
         </section>
+
+        <aside class="column width2">
+            <div class="content-box">
+                <header>
+                    <h3>注意事项：</h3>
+                </header>
+                <section>
+                    <dl>
+                        <dt>开题答辩时间：<a>3月14号</a></dt>
+                        <dt>中期检查时间：<a>4月11号</a></dt>
+                        <dt>毕业答辩时间：<a>5月16号</a></dt>
+                    </dl>
+                </section>
+            </div>
+            <div class="content-box">
+                <header>
+                    <h3>校内链接</h3>
+                </header>
+                <section>
+                    <dl>
+
+                    </dl>
+                </section>
+            </div>
+        </aside>
 
     </div>
     <!-- End of Wrapper -->

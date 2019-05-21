@@ -30,20 +30,20 @@
 
         <table class="no-style full">
             <thead>
-               <tr>
-                  <td>课题名称</td>
-                   <td>审核状态</td>
-                   <td>学生</td>
-                   <td>创建时间</td>
-               </tr>
+            <tr>
+                <td>课题名称</td>
+                <td>审核状态</td>
+                <td>创建时间</td>
+                <td>操作</td>
+            </tr>
             </thead>
             <tbody>
             <!--<s:iterator value="#session.allList" id="a">-->
             <tr th:each="topic:${topicTists}">
                 <td ><a th:href="${#request.getContextPath()+'/topic/'+topic.id+'/details'}" th:text="${topic.topicName}"></a></td>
                 <td th:text="${topic.state}"></td>
-                <td th:text="${topic.stuId}"></td>
                 <td th:text="${#dates.format(topic.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td><a th:href="${#request.getContextPath()+'/topic/'+topic.id+'/1/audit'}" th:text="审核通过"></a>&nbsp;<a th:href="${#request.getContextPath()+'/topic/'+topic.id+'/2/audit'}" th:text="不通过"></a></td>
             </tr>
             <!--</s:iterator>-->
             </tbody>

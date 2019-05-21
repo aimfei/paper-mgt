@@ -1,7 +1,7 @@
 package com.paper.papermgt.enums;
 
 public enum RoleEnum {
-    TEACHER("teacher", "老师"), STUDENT("student", "学生"), SYSTEM("sysadmin", "管理员");
+    TEACHER("teacher", "老师"), STUDENT("student", "学生"), SYSTEM("sysadmin", "管理员"),DEPTADMIN("deptadmin", "院管理员");
     private final String roleName;
     private final String desc;
 

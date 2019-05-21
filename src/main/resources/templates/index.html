@@ -44,10 +44,6 @@
                  </div>
                  <div class="column width3">
 
-                      <div>
-                          <h4>您是首次登录</h4>
-                          <p th:if="${lastTime}==null" class="box box-info">请完善个人资料！</p>
-                      </div>
                         <div th:if="${lastTime}!=null">
                             <h4>上次登录时间</h4>
                             <p th:text="${#dates.format(lastTime,'yyyy-MM-dd HH:mm:ss')}"></p>

@@ -1,6 +1,7 @@
 package com.paper.papermgt.controller;
 
 
+import com.paper.papermgt.enums.RoleEnum;
 import com.paper.papermgt.model.ClassModel;
 import com.paper.papermgt.model.CollegeModel;
 import com.paper.papermgt.model.DeptModel;
@@ -36,11 +37,27 @@ public class UserController extends BaseController {
         DeptModel deptModel=deptService.getById(userModel.getDeptid());
         CollegeModel collegeModel=collegeService.getById(userModel.getCollegeid());
         ClassModel classModel=classService.getById(userModel.getClassid());
-
+        RoleEnum roleEnum=RoleEnum.getRole(userModel.getRole());
         modelAndView.addObject("user",userModel);
-        modelAndView.addObject("dept",deptModel.getDname());
-        modelAndView.addObject("college",collegeModel.getCname());
-        modelAndView.addObject("className",classModel.getCname());
+        switch (roleEnum){
+            case TEACHER:
+                modelAndView.addObject("dept",deptModel.getDname());
+                modelAndView.addObject("college",collegeModel.getCname());
+                break;
+            case SYSTEM:
+                break;
+            case DEPTADMIN:
+                modelAndView.addObject("dept",deptModel.getDname());
+                break;
+            case STUDENT:
+                modelAndView.addObject("dept",deptModel.getDname());
+                modelAndView.addObject("college",collegeModel.getCname());
+                modelAndView.addObject("className",classModel.getCname());
+                break;
+        }
+
+
+
         modelAndView.setViewName("user/personal_info");
         return modelAndView;
     }

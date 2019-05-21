@@ -36,9 +36,9 @@
             <p th:text="${'角色：'+user.role}"></p>
             <p th:text="${'电话：'+user.telphone}"></p>
 
-            <p th:text="${'专业：'+dept}"></p>
-            <p th:text="${'学院：'+college}"></p>
-            <p th:text="${'班级：'+className}"></p>
+            <p th:if="${dept!=null}" th:text="${'专业：'+dept}"></p>
+            <p th:if="${college!=null}" th:text="${'学院：'+college}"></p>
+            <p th:if="${className!=null}" th:text="${'班级：'+className}"></p>
 
         </div>
 

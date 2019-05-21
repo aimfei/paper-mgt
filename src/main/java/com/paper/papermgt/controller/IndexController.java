@@ -34,10 +34,12 @@ public class IndexController extends BaseController {
         pager.setSort("time");
         pager.setOrder(Pager.DESC);
 
+
         modelAndView.setViewName("index");
         NoticeModel noticeModel = new NoticeModel();
         noticeModel.setScope("all");
         modelAndView.addObject("sysNoticeList", noticeService.queryList(noticeModel, pager));
+        noticeModel.setScope(super.getSession(request).getCollegeid());
         modelAndView.addObject("collNoticeList", noticeService.queryList(noticeModel, pager));
         UserModel userModel = getSession(request);
         modelAndView.addObject("username", userModel.getUsername());
@@ -72,6 +74,8 @@ public class IndexController extends BaseController {
         }
 
         request.getSession().setAttribute("user", userModel);
+        request.getSession().setAttribute("username",userModel.getUsername());
+        request.getSession().setAttribute("role",RoleEnum.getRole(userModel.getRole()).getDesc());
 
 
         return index(request, modelAndView);

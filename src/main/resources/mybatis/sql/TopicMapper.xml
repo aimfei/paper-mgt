@@ -1,194 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.paper.papermgt.mapper.TopicMapper" > 
-<!-- Result Map-->
-<resultMap id="BaseResultMap" type="com.paper.papermgt.model.TopicModel" >
-	<result column="id" property="id"/>
-	<result column="topicName" property="topicName"/>
-	<result column="topicDesc" property="topicDesc"/>
-	<result column="stuId" property="stuId"/>
-	<result column="teaId" property="teaId"/>
-	<result column="createTime" property="createTime"/>
-	<result column="modifyTime" property="modifyTime"/>
-</resultMap>
-       
-<!-- t_topic table all fields -->
-<sql id="Base_Columns" >
-	  t.id as id,
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paper.papermgt.mapper.TopicMapper">
+    <!-- Result Map-->
+    <resultMap id="BaseResultMap" type="com.paper.papermgt.model.TopicModel">
+        <result column="id" property="id"/>
+        <result column="topicName" property="topicName"/>
+        <result column="topicDesc" property="topicDesc"/>
+        <result column="stuId" property="stuId"/>
+        <result column="teaId" property="teaId"/>
+        <result column="state" property="state"/>
+        <result column="createTime" property="createTime"/>
+        <result column="modifyTime" property="modifyTime"/>
+    </resultMap>
+
+    <!-- t_topic table all fields -->
+    <sql id="Base_Columns">
+        t.id as id,
   t.topic_name as topicName,
   t.topic_desc as topicDesc,
   t.stu_id as stuId,
   t.tea_id as teaId,
+  t.state as state,
   t.create_time as createTime,
   t.modify_time as modifyTime
-</sql>
-   
-<!-- 查询条件 -->
-<sql id="Where_Condition">
-<trim  suffixOverrides="," >
-<if test="model != null " >
-	<if test="model.id != null" >
-		and t.id = #{model.id}
-	</if>
-	 <if test="model.topicName != null and model.topicName != ''" >
-		and t.topic_name = #{model.topicName}
-	</if>
-	 <if test="model.topicDesc != null and model.topicDesc != ''" >
-		and t.topic_desc = #{model.topicDesc}
-	</if>
-	<if test="model.stuId != null" >
-		and t.stu_id = #{model.stuId}
-	</if>
-	<if test="model.teaId != null" >
-		and t.tea_id = #{model.teaId}
-	</if>
-	<if test="model.createTime != null" >
-		and t.create_time = #{model.createTime}
-	</if>
-	<if test="model.modifyTime != null" >
-		and t.modify_time = #{model.modifyTime}
-	</if>
-</if>
-</trim>
-</sql>
-   
+    </sql>
 
-<!-- 插入论文记录 -->
-<insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
-  insert into t_topic
-(id,
-topic_name,
-topic_desc,
-stu_id,
-tea_id,
-create_time,
-modify_time)
- values(#{id},
-#{topicName},
-#{topicDesc},
-#{stuId},
-#{teaId},
-now(),
-#{modifyTime})
-</insert>
+    <!-- 查询条件 -->
+    <sql id="Where_Condition">
+        <trim suffixOverrides=",">
+            <if test="model != null ">
+                <if test="model.id != null">
+                    and t.id = #{model.id}
+                </if>
+                <if test="model.topicName != null and model.topicName != ''">
+                    and t.topic_name = #{model.topicName}
+                </if>
+                <if test="model.topicDesc != null and model.topicDesc != ''">
+                    and t.topic_desc = #{model.topicDesc}
+                </if>
+                <if test="model.state != null and model.state != ''">
+                    and t.state = #{model.state}
+                </if>
+                <if test="model.stuId != null">
+                    and t.stu_id = #{model.stuId}
+                </if>
+                <if test="model.teaId != null">
+                    and t.tea_id = #{model.teaId}
+                </if>
+                <if test="model.createTime != null">
+                    and t.create_time = #{model.createTime}
+                </if>
+                <if test="model.modifyTime != null">
+                    and t.modify_time = #{model.modifyTime}
+                </if>
+            </if>
+        </trim>
+    </sql>
 
-<!-- 批量插入论文记录 -->
-<insert id="addBatch" parameterType="java.util.List" >
-    insert into t_topic
-     (
-      id,topic_name,topic_desc,stu_id,tea_id,create_time,modify_time
-     ) 
-     values 
-    <foreach collection="list" item="item" index="index" separator="," >
-       (
-       	       	         	  	#{item.id},
-       	  	   	       	         	  	#{item.topicName},
-       	  	   	       	         	  	#{item.topicDesc},
-       	  	   	       	         	  	#{item.stuId},
-       	  	   	       	         	  	#{item.teaId},
-       	  	   	       	         	  	#{item.createTime},
-       	  	   	       	         	  	#{item.modifyTime}
-       	  	   		   )
-    </foreach>
-  </insert>
 
-<!-- 根据id，修改记录-->  
- <update id="update" parameterType="Object" >
-  update t_topic set   topic_name=#{topicName},
-  topic_desc=#{topicDesc},
-  stu_id=#{stuId},
-  tea_id=#{teaId},
-  modify_time=#{modifyTime}
- where id=#{id}
+    <!-- 插入论文记录 -->
+    <insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+        insert into t_topic
+        (id,
+         topic_name,
+         topic_desc,
+         stu_id,
+         tea_id,
+         state,
+         create_time,
+         modify_time)
+        values (#{id},
+                #{topicName},
+                #{topicDesc},
+                #{stuId},
+                #{teaId},
+                '待审核',
+                now(),
+                #{modifyTime})
+    </insert>
 
- </update>
- 
- <!-- 修改记录，只修改只不为空的字段 -->
-<update id="updateBySelective" parameterType="Object" >
-	update t_topic set 
-	<trim  suffixOverrides="," >
-	<if test="topicName != null  and topicName != '' ">
-		topic_name=#{topicName},
-	</if>
-	<if test="topicDesc != null  and topicDesc != '' ">
-		topic_desc=#{topicDesc},
-	</if>
-	<if test="stuId != null  ">
-		stu_id=#{stuId},
-	</if>
-	<if test="teaId != null  ">
-		tea_id=#{teaId},
-	</if>
-	<if test="createTime != null  ">
-		create_time=#{createTime},
-	</if>
-	<if test="modifyTime != null  ">
-		modify_time=#{modifyTime},
-	</if>
-	</trim> where id=#{id}
-</update>
+    <!-- 批量插入论文记录 -->
+    <insert id="addBatch" parameterType="java.util.List">
+        insert into t_topic
+        (
+        id,topic_name,topic_desc,stu_id,tea_id,create_time,modify_time
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.topicName},
+            #{item.topicDesc},
+            #{item.stuId},
+            #{item.teaId},
+            #{item.createTime},
+            #{item.modifyTime}
+            )
+        </foreach>
+    </insert>
 
-<!-- 根据主键ID删除论文记录 -->
-<delete id="deleteById" parameterType="Object">
-	delete 	 from t_topic
- where id = #{id}
-</delete>
+    <!-- 根据id，修改记录-->
+    <update id="update" parameterType="Object">
+        update t_topic
+        set topic_name=#{topicName},
+            topic_desc=#{topicDesc},
+            stu_id=#{stuId},
+            tea_id=#{teaId},
+            modify_time=#{modifyTime}
+        where id = #{id}
 
-<!-- 根据条件删除论文记录 -->
-<delete id="deleteBySelective" parameterType="Object">
-	delete t from t_topic t
-	where 1=1 <include refid="Where_Condition"/>
-</delete>
- 
-<!-- 根据主键id查询论文对象 -->
-<select id="getById"  resultMap="BaseResultMap" parameterType="Object">
-	select <include refid="Base_Columns" /> 
-	 from t_topic t where id = #{id}
-</select>
+    </update>
 
-<!-- 根据条件查询单个论文对象  -->
-<select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
-	select 
-	<include refid="Base_Columns"/>
-	from t_topic t
-	where 1=1 <include refid="Where_Condition"/>
-	limit 0,1
-</select>
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateBySelective" parameterType="Object">
+        update t_topic set
+        <trim suffixOverrides=",">
+            <if test="topicName != null  and topicName != '' ">
+                topic_name=#{topicName},
+            </if>
+            <if test="topicDesc != null  and topicDesc != '' ">
+                topic_desc=#{topicDesc},
+            </if>
+            <if test="state != null  and state != '' ">
+                state=#{state},
+            </if>
+            <if test="stuId != null  ">
+                stu_id=#{stuId},
+            </if>
+            <if test="teaId != null  ">
+                tea_id=#{teaId},
+            </if>
+            <if test="createTime != null  ">
+                create_time=#{createTime},
+            </if>
+            <if test="modifyTime != null  ">
+                modify_time=#{modifyTime},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
 
-<!-- 论文列表总数-->
-<select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
-	select count(1) from t_topic t
-	where 1=1
-	<include refid="Where_Condition"/>
-</select>
-  	
-<!-- 查询论文列表 -->
-<select id="queryList" resultMap="BaseResultMap">
-	select 
-	<include refid="Base_Columns"/>
-	from t_topic t
-	where 1=1
-	<include refid="Where_Condition"/>
-	<if test="pager != null">
-		<if test="pager.orderCondition!=null and pager.orderCondition!=''">
-		${pager.orderCondition}
-		</if>
-	    limit #{pager.beginIndex},#{pager.pageSize}
-	</if>
-</select>
+    <!-- 根据主键ID删除论文记录 -->
+    <delete id="deleteById" parameterType="Object">
+        delete
+        from t_topic
+        where id = #{id}
+    </delete>
 
-	<select id="getList" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Columns"/>
-		from t_topic t
-		where 1=1
-		  and t.tea_id in
-		<foreach collection="teaids" open="(" close=")" separator="," item="item">
-			#{item}
-		</foreach>
+    <!-- 根据条件删除论文记录 -->
+    <delete id="deleteBySelective" parameterType="Object">
+        delete t from t_topic t
+        where 1=1
+        <include refid="Where_Condition"/>
+    </delete>
 
-	</select>
- 	
+    <!-- 根据主键id查询论文对象 -->
+    <select id="getById" resultMap="BaseResultMap" parameterType="Object">
+        select
+        <include refid="Base_Columns"/>
+        from t_topic t where id = #{id}
+    </select>
+
+    <!-- 根据条件查询单个论文对象  -->
+    <select id="getOneBySelective" resultMap="BaseResultMap" parameterType="Object">
+        select
+        <include refid="Base_Columns"/>
+        from t_topic t
+        where 1=1
+        <include refid="Where_Condition"/>
+        limit 0,1
+    </select>
+
+    <!-- 论文列表总数-->
+    <select id="queryCount" resultType="java.lang.Integer" parameterType="Object">
+        select count(1) from t_topic t
+        where 1=1
+        <include refid="Where_Condition"/>
+    </select>
+
+    <!-- 查询论文列表 -->
+    <select id="queryList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Columns"/>
+        from t_topic t
+        where 1=1
+        <include refid="Where_Condition"/>
+        <if test="pager != null">
+            <if test="pager.orderCondition!=null and pager.orderCondition!=''">
+                ${pager.orderCondition}
+            </if>
+            limit #{pager.beginIndex},#{pager.pageSize}
+        </if>
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Columns"/>
+        from t_topic t
+        where 1=1 and t.state='已审核'
+        and t.tea_id in
+        <foreach collection="teaids" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+
+    </select>
+
 </mapper>   

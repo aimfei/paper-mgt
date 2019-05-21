@@ -18,7 +18,7 @@
 
 <div id="pagetitle">
     <div class="wrapper">
-        <h1>位置>>添加班级</h1>
+        <h1>位置>>班级管理</h1>
         <!-- Quick search box -->
         <form action="notexist" method="post"><input class="" type="text" id="q" name="q"/></form>
     </div>
@@ -26,43 +26,92 @@
 
 <div id="page">
     <!-- Wrapper -->
+
+
+
     <div class="wrapper">
 
-        <section class="full">
+        <section  class="column width6 first">
+            <div class="colgroup leading" style="padding-right: 5px">
+                <div class="column width3 first">
+                    <form id="addcollege"  method="post" th:action="${#request.getContextPath()+'/mgt/addDept'}">
 
-            <form id="loginform" method="post" th:action="${#request.getContextPath()+'/mgt/addClass'}">
+                        <fieldset>
+                            <legend>专业</legend>
+                            <p>
+                                <label class="required" for="collegeid">所属学院：</label><br/>
+                                <select id="collegeid" name="collegeid" >
+                                    <option th:each="item:${collList}" th:value="${item.id}" th:text="${item.cname}"></option>
+                                </select>
+                            </p>
+                            <p>
+                                <label class="required" for="deptid">所属专业：</label><br/>
+                                <select id="deptid" name="deptid" >
+                                    <option th:each="item:${deptList}" th:value="${item.id}" th:text="${item.dname}"></option>
+                                </select>
+                            </p>
+                            <p>
+                                <label class="required" for="id">班级编号：</label><br/>
+                                <input type="text" id="id" class="full" value="" name="id"/>
+                            </p>
+                            <p>
+                                <label class="required" for="cname">班级名称：</label><br/>
+                                <input type="text" id="cname" class="full" value="" name="cname"/>
+                            </p>
 
-                <p>
-                    <label class="required" for="collegeid">学院：</label><br/>
-                    <select id="collegeid" name="collegeid" >
-                        <option th:each="item:${collList}" th:value="${item.id}" th:text="${item.cname}"></option>
-                    </select>
-                </p>
+                            <p>
+                                <input type="submit" class="btn btn-green big" value="添加专业"/>
+                                or
+                                <input type="reset" class="btn" value="重置"/>
+                            </p>
 
-                <p>
-                    <label class="required" for="deptid">专业：</label><br/>
-                    <select id="deptid" name="deptid" >
-                        <option th:each="item:${deptList}" th:value="${item.id}" th:text="${item.dname}"></option>
-                    </select>
-                </p>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
 
-                <p>
-                    <label class="required" for="cname">班级：</label><br/>
-                    <input type="text" id="cname" class="full" value="" name="cname"/>
-                </p>
+            <div class="colgroup leading">
+                <div class="column width3 first">
+                    <fieldset>
+                        <legend>已有班级</legend>
+                        <table>
+                            <tr style="margin-top: 5px; padding-right: 4px;" th:each="coll:${classList}">
+                                <td th:text="${coll.cname}"></td>
+                                <td><a th:href="${#request.getContextPath()+'/mgt/3/'+coll.id+'/delete'}" th:text="删除"></a></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </div>
+            </div>
 
 
-
-
-                <p style="float: right">
-                    <input type="submit" class="btn btn-green big" value="添加"/> &nbsp;
-                    <input type="reset" class="btn btn-green big" value="取消"/>
-                </p>
-                <div class="clear">&nbsp;</div>
-
-            </form>
+            <div class="clear">&nbsp;</div>
         </section>
 
+        <aside class="column width2">
+            <div class="content-box">
+                <header>
+                    <h3>注意事项：</h3>
+                </header>
+                <section>
+                    <dl>
+                        <dt>开题答辩时间：<a>3月14号</a></dt>
+                        <dt>中期检查时间：<a>4月11号</a></dt>
+                        <dt>毕业答辩时间：<a>5月16号</a></dt>
+                    </dl>
+                </section>
+            </div>
+            <div class="content-box">
+                <header>
+                    <h3>校内链接</h3>
+                </header>
+                <section>
+                    <dl>
+
+                    </dl>
+                </section>
+            </div>
+        </aside>
     </div>
     <!-- End of Wrapper -->
 </div>

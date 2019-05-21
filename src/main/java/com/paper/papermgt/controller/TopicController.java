@@ -1,7 +1,5 @@
 package com.paper.papermgt.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import com.paper.papermgt.model.NoticeModel;
 import com.paper.papermgt.model.TopicModel;
 import com.paper.papermgt.model.UserModel;
 import com.paper.papermgt.service.TopicService;
@@ -12,10 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -42,64 +38,88 @@ public class TopicController extends BaseController {
         model.setCreateTime(new Date());
         model.setModifyTime(new Date());
         topicService.add(model);
-        return list(request,modelAndView);
+        return list(request, modelAndView);
     }
 
     @GetMapping("/list")
     public ModelAndView list(HttpServletRequest request, ModelAndView modelAndView) {
         TopicModel topicModel = new TopicModel();
-        List<TopicModel> list= topicService.queryList(topicModel,null);
-        modelAndView.addObject("topicTists",list);
+        List<TopicModel> list = topicService.queryList(topicModel, null);
+        modelAndView.addObject("topicTists", list);
         modelAndView.setViewName("topic/list");
         return modelAndView;
+    }
+
+    @GetMapping("/auditList")
+    public ModelAndView auditList(HttpServletRequest request, ModelAndView modelAndView) {
+        TopicModel topicModel = new TopicModel();
+        topicModel.setState("待审核");
+        List<TopicModel> list = topicService.queryList(topicModel, null);
+        modelAndView.addObject("topicTists", list);
+        modelAndView.setViewName("topic/au_list");
+        return modelAndView;
+    }
+
+    @RequestMapping("/{id}/{state}/audit")
+    public ModelAndView audit(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("state") Integer state, @PathVariable("id") Integer id) {
+        String statemsg = "已审核";
+        if (state == 2) {
+            statemsg = "已拒绝";
+        }
+        TopicModel topicModel = new TopicModel();
+        topicModel.setId(id);
+        topicModel.setState(statemsg);
+        topicService.updateBySelective(topicModel);
+        return auditList(request, modelAndView);
+
     }
 
     @GetMapping("/stuList")
     public ModelAndView stuList(HttpServletRequest request, ModelAndView modelAndView) {
         modelAndView.setViewName("topic/stu_list");
-        UserModel userModel=getSession(request);
-        TopicModel topicModel1=new TopicModel();
+        UserModel userModel = getSession(request);
+        TopicModel topicModel1 = new TopicModel();
         topicModel1.setStuId(userModel.getUsername());
-        topicModel1=topicService.getOneBySelective(topicModel1);
-        if (topicModel1!=null){
-            modelAndView.addObject("select",false);
-            modelAndView.addObject("topic",topicModel1);
+        topicModel1 = topicService.getOneBySelective(topicModel1);
+        if (topicModel1 != null) {
+            modelAndView.addObject("select", false);
+            modelAndView.addObject("topic", topicModel1);
             modelAndView.setViewName("topic/my_topic");
             return modelAndView;
-        }else{
-            modelAndView.addObject("select",true);
+        } else {
+            modelAndView.addObject("select", true);
         }
 
         TopicModel topicModel = new TopicModel();
 
-        UserModel teachModel=new UserModel();
+        UserModel teachModel = new UserModel();
         teachModel.setCollegeid(userModel.getCollegeid());
-        List<UserModel> teachList=userService.queryList(teachModel,null);
+        List<UserModel> teachList = userService.queryList(teachModel, null);
 
-        if (teachList==null){
+        if (teachList == null) {
             return modelAndView;
         }
 
 
-        List<String> teaIds= teachList.parallelStream().map(x->{
+        List<String> teaIds = teachList.parallelStream().map(x -> {
             return x.getUsername();
         }).distinct().collect(Collectors.toList());
 
 
-        List<TopicModel> list= topicService.getList(teaIds);
-        modelAndView.addObject("topicLists",list);
+        List<TopicModel> list = topicService.getList(teaIds);
+        modelAndView.addObject("topicLists", list);
         return modelAndView;
     }
 
 
     @GetMapping("/{id}/selectTopic")
     public ModelAndView selectTopic(HttpServletRequest request, ModelAndView modelAndView, @PathVariable("id") Integer id) {
-        TopicModel topicModel=new TopicModel();
+        TopicModel topicModel = new TopicModel();
         topicModel.setId(id);
         topicModel.setStuId(getSession(request).getUsername());
         topicModel.setModifyTime(new Date());
         topicService.updateBySelective(topicModel);
-        return stuList(request,modelAndView);
+        return stuList(request, modelAndView);
     }
 
     @GetMapping("/{id}/details")

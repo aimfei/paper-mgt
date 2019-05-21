@@ -79,84 +79,53 @@
     <div class="wrapper">
 
         <!-- Left column/section -->
-        <section class="column width6 first">
+     <section  class="column width6 first">
+         <a th:if="${topic==null}" href="http://localhost:18080/papermgt/topic/stuList">选择课题</a>
+        <form th:if="${topic!=null}" id="sampleform" method="post" th:action="${#request.getContextPath()+'/report/submit'}">
+            <fieldset>
+                <legend>提交开题报告</legend>
+                <p th:text="${'课题题目：'+topic.topicName}"></p>
+                <input type="hidden" name="taskid" th:value="${topic.id}">
+                <p>
+                    <label class="required" for="overview">本课题的意义、国内外研究概况、应用前景等（列出主要参考文献）：</label><br/>
+                    <textarea class="large full" th:text="${report.overview}" name="overview"></textarea>
+                </p>
 
-            <form id="sampleform" name="sampleform" th:action="${#request.getContextPath()+'/mgt/addPersonal'}">
+                <p>
+                    <label class="required" for="goal">研究的目标、内容和拟解决的关键问题：</label><br/>
+                    <textarea class="large full" th:text="${report.goal}" name="goal"></textarea>
+                </p>
 
-                <fieldset>
-                    <legend>注册新用户</legend>
+                <p>
+                    <label class="required" for="method">研究方法、技术路线、实验方案及可行性分析：</label><br/>
+                    <textarea class="large full"  th:text="${report.method}" name="method"></textarea>
+                </p>
 
-                    <p id="message" class="box box-info half" hidden="true"></p>
+                <p>
+                    <label class="required" for="innovation">特色或创新之处：</label><br/>
+                    <textarea class="large full"  th:text="${report.innovation}" name="innovation"></textarea>
+                </p>
 
-                    <p>
-                        <label class="required" for="role">用户角色：</label><br/>
-                        <select id="role" class="half" name="role">
-                            <option value="deptadmin">院管理员</option>
-                            <option value="teacher">教师</option>
-                            <option value="student">学生</option>
-                        </select>
-                        初始密码与帐号相同
-                    </p>
+                <p>
+                    <label class="required" for="progress">研究计划及预期进展：</label><br/>
+                    <textarea class="large full"  th:text="${report.progress}" name="progress"></textarea>
+                </p>
 
-                    <p>
-                        <label class="required" for="realname">真实姓名：</label><br/>
-                        <input type="text" id="realname" class="half" value="" name="realname"/>
-                    </p>
-                    <p>
-                        <label class="required" for="email">邮箱：</label><br/>
-                        <input type="text" id="email" class="half" value="" name="email"/>
-                    </p>
+                <p>
+                    <label class="required" for="requirement">已具备的条件、尚缺少的条件和拟解决的途径（包括利用教学实验中心、科研实验室、实习基地、校外其它企事业单位等条件的计划与落实情况）：</label><br/>
+                    <textarea class="large full"  th:text="${report.requirement}" name="requirement"></textarea>
+                </p>
 
-                    <p>
-                        <label class="required" for="telephone">电话：</label><br/>
-                        <input type="text" id="telephone" class="half" value="" name="telephone"/>
-                    </p>
+                <p>
+                    <input type="submit" class="btn btn-green big" value="提交"/>
+                    or
+                    <input type="reset" class="btn" value="重置"/>
+                </p>
 
+            </fieldset>
+        </form>
 
-                    <p>
-                        <label class="required" id="lab_colleges"  for="colleges">所在学院：</label><br/>
-                        <select id="colleges" class="half" name="collegeid" onchange="getdeptlist(this.value)">
-                            <option value="0">--请选择所在学院--</option>
-                                <option th:each="item:${collList}" th:value="${item.id}" th:text="${item.cname}"></option>
-                        </select>
-                    </p>
-
-                    <p>
-                        <label for="deptlist">所在专业：</label><br/>
-                        <select id="deptlist" class="half" name="deptid" onchange="getclasslist(this.value)">
-                            <option value="0">--请选择所在专业--</option>
-                            <option th:each="item:${deptList}" th:value="${item.id}" th:text="${item.dname}"></option>
-                        </select>
-                        教师和系管理员可不选专业
-                    </p>
-
-                    <p>
-                        <label for="classlist">所在班级：</label><br/>
-                        <select id="classlist" class="half" name="classid">
-                            <option value="0">--请选择所在班级--</option>
-                            <option th:each="item:${classList}" th:value="${item.id}" th:text="${item.cname}"></option>
-                        </select>
-                        教师和系管理员可不选班级
-                    </p>
-
-                    <p>
-                        <label class="required" for="username">用户帐号：</label><br/>
-                        <input type="text" id="username" class="half" value="" name="username"/>
-                        （学号或工号）
-                    </p>
-
-                    <p>
-                        <input type="submit" class="btn btn-green big" value="提交" id="submit" onclick="sub()"/>
-                        or
-                        <input type="reset" class="btn" value="重置"/>
-                    </p>
-
-                </fieldset>
-
-            </form>
-
-
-        </section>
+    </section>
         <!-- End of Left column/section -->
 
         <!-- Right column/section -->
