@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.main.client.mapper.MessageMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.test.main.client.model.MessageModel" >
+	<result column="id" property="id"/>
+	<result column="stuId" property="stuId"/>
+	<result column="teaId" property="teaId"/>
+	<result column="msg" property="msg"/>
+	<result column="createTime" property="createTime"/>
+</resultMap>
+       
+<!-- t_message table all fields -->
+<sql id="Base_Columns" >
+	  t.id as id,
+  t.stu_id as stuId,
+  t.tea_id as teaId,
+  t.msg as msg,
+  t.create_time as createTime
+</sql>
+   
+<!-- 查询条件 -->
+<sql id="Where_Condition">
+<trim  suffixOverrides="," >
+<if test="model != null " >
+	<if test="model.id != null" >
+		and t.id = #{model.id}
+	</if>
+	 <if test="model.stuId != null and model.stuId != ''" >
+		and t.stu_id = #{model.stuId}
+	</if>
+	 <if test="model.teaId != null and model.teaId != ''" >
+		and t.tea_id = #{model.teaId}
+	</if>
+	 <if test="model.msg != null and model.msg != ''" >
+		and t.msg = #{model.msg}
+	</if>
+	<if test="model.createTime != null" >
+		and t.create_time = #{model.createTime}
+	</if>
+</if>
+</trim>
+</sql>
+   
+
+<!-- 插入投资记录记录 -->
+<insert id="add" parameterType="Object" useGeneratedKeys="true" keyProperty="id">
+  insert into t_message
+(id,
+stu_id,
+tea_id,
+msg,
+create_time)
+ values(#{id},
+#{stuId},
+#{teaId},
+#{msg},
+now())
+</insert>
+
+<!-- 批量插入投资记录记录 -->
+<insert id="addBatch" parameterType="java.util.List" >
+    insert into t_message
+     (
+      id,stu_id,tea_id,msg,create_time
+     ) 
+     values 
+    <foreach collection="list" item="item" index="index" separator="," >
+       (
+       	       	         	  	#{item.id},
+       	  	   	       	         	  	#{item.stuId},
+       	  	   	       	         	  	#{item.teaId},
+       	  	   	       	         	  	#{item.msg},
+       	  	   	       	         	  	#{item.createTime}
+       	  	   		   )
+    </foreach>
+  </insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update t_message set   stu_id=#{stuId},
+  tea_id=#{teaId},
+  msg=#{msg},
+
+ where id=#{id}
+
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update t_message set 
+	<trim  suffixOverrides="," >
+	<if test="stuId != null  and stuId != '' ">
+		stu_id=#{stuId},
+	</if>
+	<if test="teaId != null  and teaId != '' ">
+		tea_id=#{teaId},
+	</if>
+	<if test="msg != null  and msg != '' ">
+		msg=#{msg},
+	</if>
+	<if test="createTime != null  ">
+		create_time=#{createTime},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 根据主键ID删除投资记录记录 -->
+<delete id="deleteById" parameterType="Object">
+	delete 	 from t_message
+ where id = #{id}
+</delete>
+
+<!-- 根据条件删除投资记录记录 -->
+<delete id="deleteBySelective" parameterType="Object">
+	delete t from t_message t
+	where 1=1 <include refid="Where_Condition"/>
+</delete>
+ 
+<!-- 根据主键id查询投资记录对象 -->
+<select id="getById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Columns" /> 
+	 from t_message t where id = #{id}
+</select>
+
+<!-- 根据条件查询单个投资记录对象  -->
+<select id="getOneBySelective"  resultMap="BaseResultMap" parameterType="Object">
+	select 
+	<include refid="Base_Columns"/>
+	from t_message t
+	where 1=1 <include refid="Where_Condition"/>
+	limit 0,1
+</select>
+
+<!-- 投资记录列表总数-->
+<select id="queryCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from t_message t
+	where 1=1
+	<include refid="Where_Condition"/>
+</select>
+  	
+<!-- 查询投资记录列表 -->
+<select id="queryList" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Columns"/>
+	from t_message t
+	where 1=1
+	<include refid="Where_Condition"/>
+	<if test="pager != null">
+		<if test="pager.orderCondition!=null and pager.orderCondition!=''">
+		${pager.orderCondition}
+		</if>
+	    limit #{pager.beginIndex},#{pager.pageSize}
+	</if>
+</select>
+ 	
+</mapper>   
